@@ -3,3 +3,6 @@ pyautogui
 opencv-python
 tensorflow
 yolov8
+ultralytics
+mss
+pygetwindow
