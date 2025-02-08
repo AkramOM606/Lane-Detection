@@ -1,3 +1,5 @@
+numpy
+pyautogui
 opencv-python
-pyscreenshot
-mss
+tensorflow
+yolov8

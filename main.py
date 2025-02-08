@@ -1,6 +1,16 @@
-# Using pyscreenshot (alternative to Telemetry)
-# from PIL import ImageGrab
-import pyscreenshot as ImageGrab
+import numpy as np
+import cv2
+import pyautogui
 
-img = ImageGrab.grab(bbox=(2, 36, 1280, 720 + 36), backend="mss", childprocess=False)
-# X1, Y1, X2, Y2 # zero 'childprocess' and 'mss' gives the best performance in most cases
+
+def capture_screen():
+    screen = np.array(pyautogui.screenshot())
+    return cv2.cvtColor(screen, cv2.COLOR_BGR2RGB)
+
+
+while True:
+    frame = capture_screen()
+    cv2.imshow("Game Frame", frame)
+    if cv2.waitKey(1) == ord("q"):
+        break
+cv2.destroyAllWindows()
