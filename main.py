@@ -1,17 +1,30 @@
-# import numpy as np
-# import cv2
-# import pyautogui
+import time
+import cv2
 
+from game_capture import capture_game_window, get_game_window
+from lane_detection import detect_lanes, draw_lines, preprocess_image
+from object_detection import detect_objects
 
-# def capture_screen():
-#     screen = np.array(pyautogui.screenshot())
-#     return cv2.cvtColor(screen, cv2.COLOR_BGR2RGB)
+game_window = get_game_window()
 
+while True:
+    start_time = time.time()
+    frame = capture_game_window(game_window)
 
-# while True:
-#     frame = capture_screen()
-#     cv2.imshow("Game Frame", frame)
-#     if cv2.waitKey(1) == ord("q"):
-#         break
-# cv2.destroyAllWindows()
-    
+    if frame is not None:
+        # edges = preprocess_image(frame)
+        # lines = detect_lanes(edges)
+        # annotated_frame = draw_lines(frame, lines)
+        # final_frame = annotated_frame
+        final_frame = detect_objects(frame)
+
+        cv2.imshow("Combined Detection", final_frame)
+
+    if cv2.waitKey(1) == ord("q"):
+        break
+
+    end_time = time.time()
+    fps = 1 / (end_time - start_time)
+    print(f"FPS: {fps:.2f}")
+
+cv2.destroyAllWindows()

@@ -25,6 +25,7 @@ def capture_game_window(game_window):
             "width": game_window.width,
             "height": game_window.height,
         }
-        screenshot = sct.shot(mon=monitor, output="screenshot.png")
-        frame = cv2.imread(screenshot)
+        screenshot = sct.grab(monitor)
+        frame = np.array(screenshot)
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGRA2BGR)  # Convert BGRA to BGR
         return frame
