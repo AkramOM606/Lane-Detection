@@ -2,7 +2,9 @@ import time
 import cv2
 
 from game_capture import capture_game_window, get_game_window
-from lane_detection import detect_lanes, draw_lines, preprocess_image
+
+# from lane_detection import detect_lanes, draw_lines, preprocess_image
+from lane_detection import detect_lanes
 from object_detection import detect_objects
 
 game_window = get_game_window()
@@ -12,13 +14,16 @@ while True:
     frame = capture_game_window(game_window)
 
     if frame is not None:
+        # Lane detection here !!!
         # edges = preprocess_image(frame)
         # lines = detect_lanes(edges)
         # annotated_frame = draw_lines(frame, lines)
         # final_frame = annotated_frame
-        final_frame = detect_objects(frame)
+        # final_frame = detect_objects(frame)
 
-        cv2.imshow("Combined Detection", final_frame)
+        lane_frame = detect_lanes(frame)
+
+        cv2.imshow("Combined Detection", lane_frame)
 
     if cv2.waitKey(1) == ord("q"):
         break
