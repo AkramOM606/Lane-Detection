@@ -4,7 +4,7 @@ import cv2
 from game_capture import capture_game_window, get_game_window
 
 # from lane_detection import detect_lanes, draw_lines, preprocess_image
-from lane_detection import detect_lanes
+from lanenet.lane_detection import detect_lanes
 from object_detection import detect_objects
 
 game_window = get_game_window()
