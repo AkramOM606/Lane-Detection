@@ -21,9 +21,9 @@ while True:
         # final_frame = annotated_frame
 
         lane_frame = detect_lanes(frame)
-        final_frame = detect_objects(lane_frame)
+        # final_frame = detect_objects(lane_frame)
 
-        cv2.imshow("Combined Detection", final_frame)
+        cv2.imshow("Combined Detection", lane_frame)
 
     if cv2.waitKey(1) == ord("q"):
         break
