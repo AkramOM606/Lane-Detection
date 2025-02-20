@@ -20,9 +20,9 @@ print(f"Game window found: {game_window.title}")
 def capture_game_window(game_window):
     with mss() as sct:
         monitor = {
-            "top": game_window.top,
+            "top": game_window.top + 55,
             "left": game_window.left,
-            "width": game_window.width,
+            "width": game_window.width - 15,
             "height": game_window.height,
         }
         screenshot = sct.grab(monitor)
