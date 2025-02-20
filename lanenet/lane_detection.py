@@ -83,11 +83,18 @@ def detect_lanes(frame):
 
     binary_pred = binary_pred.astype(np.uint8)
 
-    binary_pred = cv2.resize(
+    mask = cv2.resize(
         binary_pred, (frame.shape[1], frame.shape[0]), interpolation=cv2.INTER_NEAREST
     )
 
-    return binary_pred
+    # Create an overlay image: lane regions will be green.
+    overlay = np.zeros_like(frame, dtype=np.uint8)
+    overlay[mask > 128] = [0, 255, 0]
+
+    # Blend the overlay with the original frame.
+    blended = cv2.addWeighted(frame, 1.0, overlay, 0.5, 0)
+
+    return blended
 
     # # Convert BGR (OpenCV) image to RGB and then to a PIL Image.
     # f()

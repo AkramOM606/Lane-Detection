@@ -19,11 +19,11 @@ while True:
         # lines = detect_lanes(edges)
         # annotated_frame = draw_lines(frame, lines)
         # final_frame = annotated_frame
-        # final_frame = detect_objects(frame)
 
         lane_frame = detect_lanes(frame)
+        final_frame = detect_objects(lane_frame)
 
-        cv2.imshow("Combined Detection", lane_frame)
+        cv2.imshow("Combined Detection", final_frame)
 
     if cv2.waitKey(1) == ord("q"):
         break
