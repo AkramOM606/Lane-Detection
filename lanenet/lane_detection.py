@@ -21,7 +21,7 @@ from lanenet.model.lanenet.LaneNet import LaneNet
 # Define some constants.
 RESIZE_HEIGHT = 256  # Height expected by the model
 RESIZE_WIDTH = 512  # Width expected by the model
-MODEL_PATH = "./lanenet/log/best_model.pth"  # Update with your weights file path
+MODEL_PATH = "weights/lanenet_ENet.pth"
 
 # Set device: GPU if available, else CPU.
 DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -36,7 +36,6 @@ data_transform = transforms.Compose(
 )
 
 # Initialize and load the LaneNet model.
-# Note: The test.py uses an argument "arch" (model type); adjust if your model requires it.
 model = LaneNet(arch="ENet")
 state_dict = torch.load(MODEL_PATH, map_location=DEVICE, weights_only=True)
 model.load_state_dict(state_dict)
