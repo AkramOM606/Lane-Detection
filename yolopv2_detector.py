@@ -1,6 +1,6 @@
 import cv2
 import torch
-import torch.nn.functional as F  # Add this for GPU interpolation
+import torch.nn.functional as F
 import numpy as np
 from lane_detector import LaneDetector
 from utils.utils import (
@@ -11,9 +11,7 @@ from utils.utils import (
     non_max_suppression,
     split_for_trace_model,
     driving_area_mask,
-    lane_line_mask,  # Add this for direct mask access
-    plot_one_box,
-    show_seg_result,
+    lane_line_mask,
     letterbox,
 )
 
@@ -62,8 +60,6 @@ class YOLOPv2Detector:
         img, ratio, (dw, dh) = letterbox(
             img, new_shape=(self.img_size, self.img_size), stride=self.stride
         )
-        # print(f"Preprocessed shape: {img.shape}, ratio: {ratio}, padding: ({dw}, {dh})")
-
         img = torch.from_numpy(img.transpose(2, 0, 1)).to(self.device)
         img = img.half() if self.half else img.float()
         img /= 255.0
@@ -73,7 +69,6 @@ class YOLOPv2Detector:
 
     def detect(self, frame):
         im0 = frame.copy()
-        # print(f"Original frame shape: {im0.shape}")
 
         t_pre = time_synchronized()
         img, ratio, pad = self.preprocess_frame(frame)
@@ -91,36 +86,56 @@ class YOLOPv2Detector:
         pred = split_for_trace_model(pred, anchor_grid)
         pred = non_max_suppression(pred, self.conf_thres, self.iou_thres)
 
-        # GPU-based mask processing
-        da_seg_mask = torch.from_numpy(driving_area_mask(seg)).to(
-            self.device
-        )  # Convert to tensor on GPU
-        ll_seg_mask = torch.from_numpy(lane_line_mask(ll)).to(
-            self.device
-        )  # Direct mask access
-        masks = torch.stack([da_seg_mask, ll_seg_mask]).unsqueeze(
-            0
-        )  # Stack for batch resize
+        # GPU-based mask and overlay
+        da_seg_mask = torch.from_numpy(driving_area_mask(seg)).to(self.device)  # [H, W]
+        ll_seg_mask = torch.from_numpy(lane_line_mask(ll)).to(self.device)  # [H, W]
+        masks = torch.stack([da_seg_mask, ll_seg_mask]).unsqueeze(0)  # [1, 2, H, W]
         masks = F.interpolate(masks, size=im0.shape[:2], mode="nearest").squeeze(
             0
-        )  # Resize on GPU
-        da_seg_mask, ll_seg_mask = (
-            masks[0].cpu().numpy(),
-            masks[1].cpu().numpy(),
-        )  # Back to CPU for overlay
+        )  # [2, H, W]
 
-        # Bounding boxes
-        for i, det in enumerate(pred):
-            if len(det):
-                det[:, :4] = scale_coords(
-                    img.shape[2:], det[:, :4], im0.shape, ratio_pad=(ratio, pad)
-                ).round()
-                for *xyxy, conf, cls in reversed(det):
-                    plot_one_box(xyxy, im0, line_thickness=2)
+        # Single overlay tensor
+        palette = torch.tensor(
+            [[0, 0, 0], [0, 255, 0], [0, 0, 255]],
+            dtype=torch.float32,
+            device=self.device,
+        )  # BGR
+        overlay = torch.zeros((im0.shape[0], im0.shape[1], 3), device=self.device)
+        overlay[masks[0] == 1] = palette[1]  # Green for drivable area
+        overlay[masks[1] == 1] = palette[2]  # Red for lanes
 
-        # Overlays
-        self.lane_detector.overlay_lanes(im0, ll_seg_mask)  # Updated method
-        show_seg_result(im0, (da_seg_mask, np.zeros_like(da_seg_mask)), is_demo=True)
+        # Blend with frame
+        im0_tensor = torch.from_numpy(im0).to(self.device).float()  # [H, W, 3]
+        color_mask = overlay.mean(dim=2) > 0  # [H, W]
+        im0_tensor[color_mask] = (
+            im0_tensor[color_mask] * 0.5 + overlay[color_mask] * 0.5
+        )
+
+        # GPU-based bounding boxes
+        if pred is not None:
+            for det in pred:
+                if det is not None and len(det):
+                    det[:, :4] = scale_coords(
+                        img.shape[2:], det[:, :4], im0.shape, ratio_pad=(ratio, pad)
+                    ).round()
+                    for *xyxy, conf, cls in det:
+                        x1, y1, x2, y2 = map(int, xyxy)
+                        # Draw rectangle on GPU tensor
+                        im0_tensor[y1:y2, x1 : x1 + 2, :] = torch.tensor(
+                            [0, 255, 255], device=self.device
+                        )  # Left
+                        im0_tensor[y1:y2, x2 - 2 : x2, :] = torch.tensor(
+                            [0, 255, 255], device=self.device
+                        )  # Right
+                        im0_tensor[y1 : y1 + 2, x1:x2, :] = torch.tensor(
+                            [0, 255, 255], device=self.device
+                        )  # Top
+                        im0_tensor[y2 - 2 : y2, x1:x2, :] = torch.tensor(
+                            [0, 255, 255], device=self.device
+                        )  # Bottom
+
+        # Finalize frame
+        im0 = im0_tensor.cpu().numpy().astype(np.uint8)
 
         t_post_end = time_synchronized()
 
