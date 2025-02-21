@@ -6,3 +6,4 @@ yolov8
 ultralytics
 mss
 pygetwindow
+pywin32
