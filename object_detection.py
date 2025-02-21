@@ -1,6 +1,6 @@
 from ultralytics import YOLO
 
-model = YOLO("yolo11n.pt")  # Load a pretrained model
+model = YOLO("weights/yolo11n.pt")  # Load a pretrained model
 
 
 def detect_objects(frame):
