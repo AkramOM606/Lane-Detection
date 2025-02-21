@@ -1,4 +1,5 @@
 import pygetwindow as gw
+import win32gui
 from mss import mss
 import numpy as np
 import cv2
@@ -13,19 +14,38 @@ def get_game_window():
     raise Exception("Euro Truck Simulator 2 window not found")
 
 
-game_window = get_game_window()
-print(f"Game window found: {game_window.title}")
-
-
 def capture_game_window(game_window):
     with mss() as sct:
+        hwnd = game_window._hWnd
+        # Get client area
+        rect = win32gui.GetClientRect(hwnd)
+        client_left, client_top, client_right, client_bottom = rect
+        width = client_right - client_left
+        height = client_bottom - client_top
+
+        # Convert to screen coordinates
+        client_top_left = win32gui.ClientToScreen(hwnd, (client_left, client_top))
+        screen_left = client_top_left[0]
+        screen_top = client_top_left[1]
+
         monitor = {
-            "top": game_window.top,
-            "left": game_window.left,
-            "width": game_window.width,
-            "height": game_window.height,
+            "top": screen_top,
+            "left": screen_left,
+            "width": width,
+            "height": height,
         }
+
+        # Debug: Print the capture region
+        print(
+            f"Capture region: top={monitor['top']}, left={monitor['left']}, "
+            f"width={monitor['width']}, height={monitor['height']}"
+        )
+
         screenshot = sct.grab(monitor)
         frame = np.array(screenshot)
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGRA2BGR)  # Convert BGRA to BGR
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGRA2BGR)
+
+        # Debug: Print frame shape
+        print(f"Captured frame shape: {frame.shape}")
+
         return frame
