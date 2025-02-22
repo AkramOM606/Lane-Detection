@@ -15,15 +15,11 @@ while True:
 
     if frame is not None:
         # Lane detection here !!!
-        # edges = preprocess_image(frame)
-        # lines = detect_lanes(edges)
-        # annotated_frame = draw_lines(frame, lines)
-        # final_frame = annotated_frame
+        overlay = detect_lanes(frame)
+        objects_frame = detect_objects(frame)
+        final_frame = cv2.addWeighted(objects_frame, 1.0, overlay, 1, 0)
 
-        lane_frame = detect_lanes(frame)
-        # final_frame = detect_objects(lane_frame)
-
-        cv2.imshow("Combined Detection", lane_frame)
+        cv2.imshow("Combined Detection", final_frame)
 
     if cv2.waitKey(1) == ord("q"):
         break

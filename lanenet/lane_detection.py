@@ -82,7 +82,7 @@ def detect_lanes(frame):
     overlay[mask > 128] = [0, 255, 0]
 
     # Blend the overlay with the original frame.
-    blended = cv2.addWeighted(frame, 1.0, overlay, 1, 0)
+    # blended = cv2.addWeighted(frame, 1.0, overlay, 1, 0)
 
     ### Instance prediction
 
@@ -99,4 +99,4 @@ def detect_lanes(frame):
     #     interpolation=cv2.INTER_NEAREST,
     # )
 
-    return blended
+    return overlay
