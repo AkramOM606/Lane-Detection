@@ -20,27 +20,33 @@ The project is a work in progress, and contributions are very welcome!
    git clone https://github.com/AkramOM606/Lane-Detection.git
    cd Lane-Detection
 2. **Set Up a Virtual Environment** (Optional but Recommended):
-
-python -m venv venv
-source venv/bin/activate  # For Windows use: venv\Scripts\activate
-
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # For Windows use: venv\Scripts\activate
+   ```
 3. **Install Dependencies:**
-
-pip install -r requirements.txt
+   ```bash
+   pip install -r requirements.txt
+   ```
 
 ## Usage
+
 ### Run Lane Detection (LaneNet with ENet):
 
+```bash
 python main_Lanenet_ENet.py
+```
 
 ### Run Object Detection (YOLOPv2):
 
+```bash
 python main_yolopv2.py
+```
 
-Capture Game Screen Data: Use the game_capture.py script to capture frames from ETS2. Make sure ETS2 is running when you execute this script.
+Make sure ETS2 is running when you execute this script.
 
 ## Repository Structure
-
+```
 Lane-Detection/
 ├── lanenet/                # Model definitions and configurations for LaneNet
 ├── utils/                  # Utility scripts and helper functions
@@ -53,6 +59,7 @@ Lane-Detection/
 ├── yolopv2_detector.py     # YOLOPv2 detection helper
 ├── requirements.txt        # Python dependencies
 └── README.md               # This file
+```
 
 ## Configuration
 ### Pre-trained Weights: Ensure that the required pre-trained model weights are placed in the weights/ directory.
