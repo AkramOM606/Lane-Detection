@@ -43,7 +43,8 @@ python main_Lanenet_ENet.py
 python main_yolopv2.py
 ```
 
-Make sure ETS2 is running when you execute this script.
+> [!IMPORTANT]
+> Make sure ETS2 is running at 1280x720 in Windowed mode when you execute this script.
 
 ## Repository Structure
 ```
