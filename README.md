@@ -19,7 +19,7 @@ The project is a work in progress, and contributions are very welcome!
 ## Features
 
 - **Lane Detection:** A PyTorch-based implementation of LaneNet for accurate detection of lane markings or YOLOPv2.
-- **Object Detection:** YOLOPv2 integration to identify key objects in the driving scene is a plus.
+- **Object Detection:** YOLOPv2 integration to identify key objects in the driving scene or YOLO11n.
 - **Real-Time Processing:** Capture game screen data from ETS2 and process it in real-time.
 - **Modular Codebase:** Clearly separated modules for lane detection, object detection, and utilities.
 
