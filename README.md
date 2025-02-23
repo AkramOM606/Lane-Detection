@@ -6,6 +6,16 @@ This project is designed for lane detection in [Euro Truck Simulator 2 (ETS2)](h
 
 The project is a work in progress, and contributions are very welcome!
 
+### YOLOPv2 Preview
+<p align="center">
+   <video src="https://github.com/user-attachments/assets/0c8163ea-4d15-4092-aec0-a8da361e1189" controls></video>
+</p>
+
+### LaneNet (ENet) + YOLO11n Preview
+<p align="center">
+   <video src="https://github.com/user-attachments/assets/be79d4ce-5875-4474-8a18-65122f50bbc6" controls></video>
+</p>
+
 ## Features
 
 - **Lane Detection:** A PyTorch-based implementation of LaneNet for accurate detection of lane markings or YOLOPv2.
@@ -31,6 +41,9 @@ The project is a work in progress, and contributions are very welcome!
 
 ## Usage
 
+> [!IMPORTANT]
+> Make sure ETS2 is running at 1280x720 in Windowed mode when you execute this script.
+
 ### Run Lane Detection (LaneNet with ENet):
 
 ```bash
@@ -42,9 +55,6 @@ python main_Lanenet_ENet.py
 ```bash
 python main_yolopv2.py
 ```
-
-> [!IMPORTANT]
-> Make sure ETS2 is running at 1280x720 in Windowed mode when you execute this script.
 
 ## Repository Structure
 ```
@@ -80,10 +90,13 @@ Please adhere to the project's coding standards and update the documentation as 
 This project is licensed under the MIT License.
 
 ## Acknowledgements
-- PyTorch
-- LaneNet
-- YOLOPv2
-- The ETS2 community for inspiration and support
+A huge thanks to these awesome projects for providing their incredible models:
+
+- [YOLOPv2](https://github.com/CAIC-AD/YOLOPv2) by CAIC-AD – for its advanced multi-task perception model.
+- [LaneNet-Lane-Detection-PyTorch](https://github.com/IrohXu/lanenet-lane-detection-pytorch) by IrohXu – for the efficient lane detection model.
+- And also the ETS2 community for inspiration.
+
+Their contributions have been invaluable in advancing this project!
 
 ## Disclaimer
 This project is a work in progress and is provided "as is" without any warranties. Use at your own risk.
