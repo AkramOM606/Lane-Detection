@@ -16,10 +16,10 @@ This project is designed for lane detection in [Euro Truck Simulator 2 (ETS2)](h
 
 ## Features
 
-- **Lane Detection:** A PyTorch-based implementation of LaneNet for accurate detection of lane markings or YOLOPv2.
-- **Object Detection:** YOLOPv2 integration to identify key objects in the driving scene or YOLO11n.
-- **Real-Time Processing:** Capture game screen data from ETS2 and process it in real-time.
-- **Modular Codebase:** Clearly separated modules for lane detection, object detection, and utilities.
+- **Lane Detection:** A PyTorch-based implementation using LaneNet (with an ENet backbone) for accurate lane marking detection, or an alternative approach using YOLOPv2.
+- **Object Detection:** Integration of YOLOPv2 to identify key objects in the driving scene, with an alternative version utilizing YOLO11n.
+- **Real-Time Processing:** Capturing game screen data from ETS2 and processing it in real time.
+- **Modular Codebase:** A clearly separated structure for lane detection, object detection, and utility modules.
 
 ## Installation
 
