@@ -1,10 +1,8 @@
 # Lane Detection for ETS2 using PyTorch LaneNet & YOLOPv2
 
 This project is designed for lane detection in [Euro Truck Simulator 2 (ETS2)](https://store.steampowered.com/app/227300/Euro_Truck_Simulator_2/) using deep learning models implemented with PyTorch. It combines two distinct approaches for robust real-time scene understanding:
-- **Lane Detection using LaneNet (with an ENet backbone)**
-- **Object Detection using YOLOPv2**
-
-The project is a work in progress, and contributions are very welcome!
+- **Lane Detection using LaneNet (with an ENet backbone) and Object Detection with YOLO11n**
+- **Object Detection and Vehicle Detection using YOLOPv2**
 
 ### YOLOPv2 Preview
 <p align="center">
