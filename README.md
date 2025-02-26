@@ -71,8 +71,9 @@ Lane-Detection/
 ```
 
 ## Configuration
-### Pre-trained Weights: Ensure that the required pre-trained model weights are placed in the weights/ directory.
-### Customization: Adjust configuration parameters (e.g., file paths, model hyperparameters) in the scripts as needed for your local setup.
+> [!NOTE]
+> 1. **Pre-trained Weights:** Ensure that the required pre-trained model weights are placed in the weights/ directory.
+> 2. **Customization:** Adjust configuration parameters (e.g., file paths, model hyperparameters) in the scripts as needed for your local setup.
 
 ## Contributing
 Contributions are greatly appreciated! To contribute:
